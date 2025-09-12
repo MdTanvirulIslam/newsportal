@@ -251,25 +251,35 @@ class FrontendController extends Controller
         return $ajaxData;
     }
 
-    public function category($slug){
-        $data = Category::where('slug',$slug)->first();
-        if($data){
-            $posts = $data->posts()
-                      ->where('schedule_post','=',0)
-                      ->where('is_pending',0)
-                      ->where('status',true)
-                      ->orderBy('id','desc')
-                      ->paginate(10);
-		    $posts1 = $data->posts()
-                      ->where('schedule_post','=',0)
-                      ->where('is_pending',0)
-                      ->where('status',true)
-                      ->orderBy('id','desc')
-                      ->paginate(1);
-            return view('frontend.category',compact('data','posts1','posts'));
+    public function category($slug)
+    {
+        $data = Category::where('slug', $slug)->first();
+
+        if (! $data) {
+            return view('errors.404');
         }
-        return view('errors.404');
+
+        // base query
+        $baseQuery = $data->posts()
+            ->where('schedule_post', 0)
+            ->where('is_pending', 0)
+            ->where('status', true)
+            ->orderBy('id', 'desc');
+
+        // get the single first (latest) post
+        $firstPost = (clone $baseQuery)->first();
+
+        // paginate the rest excluding the first post id
+        if ($firstPost) {
+            $posts = $baseQuery->where('id', '<>', $firstPost->id)->paginate(10);
+        } else {
+            $posts = $baseQuery->paginate(10);
+        }
+
+        return view('frontend.category', compact('data', 'firstPost', 'posts'));
     }
+
+
 
     public function details(Request $request,$id,$slug){
         $sliders         = Post::orderBy('id','desc')
