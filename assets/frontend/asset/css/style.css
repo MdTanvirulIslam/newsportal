@@ -1121,8 +1121,8 @@ input:-webkit-autofill:focus {
   z-index: 10;
   background-color: #f6f6f6;
   padding: 6px 10px;
-  max-height: 74px;
-  min-height: 74px;
+  max-height: 40px;
+  min-height: 40px;
 }
 .single-videos h3 {
   margin: 0;

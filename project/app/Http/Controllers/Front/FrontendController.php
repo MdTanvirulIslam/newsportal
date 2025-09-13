@@ -19,6 +19,7 @@ use App\Models\Widget;
 use App\Models\WidgetSetiings;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use InvalidArgumentException;
 use Markury\MarkuryPost;
@@ -184,7 +185,21 @@ class FrontendController extends Controller
             ->join('categories', 'categories.id', '=', 'header_post.category_id')
             ->select('header_post.title', 'header_post.description', 'header_post.post_date', 'header_post.bg_color', 'header_post.status','categories.slug')
             ->first();
-        return view('frontend.index',compact('header_post','hot_news','header_news','sliders','slider_lefts','slider_rights_firsts','slider_rights_seconds','home_page_posts','is_features','is_recents','is_trendings','is_breaking','more_news','video_large','video_smalls','polls','ws','image_albums','sponsor_banners','widgets'));
+
+        $apiKey = env('YOUTUBE_API_KEY');
+        $channelId = env('YOUTUBE_CHANNEL_ID');
+
+        // Call YouTube API
+        $response = Http::get("https://www.googleapis.com/youtube/v3/search", [
+            'key' => $apiKey,
+            'channelId' => $channelId,
+            'part' => 'snippet,id',
+            'order' => 'date',
+            'maxResults' => 12, // number of videos
+        ]);
+
+        $videos = $response->json()['items'] ?? [];
+        return view('frontend.index',compact('videos','header_post','hot_news','header_news','sliders','slider_lefts','slider_rights_firsts','slider_rights_seconds','home_page_posts','is_features','is_recents','is_trendings','is_breaking','more_news','video_large','video_smalls','polls','ws','image_albums','sponsor_banners','widgets'));
     }
 
     public function loadMore(Request $request){

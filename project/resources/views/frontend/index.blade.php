@@ -1222,7 +1222,7 @@
             <div id="featured-videos-section" class="owl-carousel">
 
 
-                @foreach($video2 as $row)
+                {{--@foreach($video2 as $row)
                     <div class="item">
                         <a href="{{ route('frontend.details',[$row->id,$row->slug])}}">
                             <div class="single-videos">
@@ -1244,7 +1244,35 @@
                             </div>
                         </a>
                     </div>
+                @endforeach--}}
+
+                @foreach($videos as $row)
+                    @if(isset($row['id']['videoId']))
+                        <div class="item">
+                            <a href="https://www.youtube.com/watch?v={{ $row['id']['videoId'] }}" target="_blank">
+                                <div class="single-videos">
+                                    <div class="images">
+                                        <img src="https://img.youtube.com/vi/{{ $row['id']['videoId'] }}/mqdefault.jpg"
+                                             alt="{{ strlen($row['snippet']['title']) > 40 ? mb_substr($row['snippet']['title'],0,40,'utf-8') : $row['snippet']['title'] }}">
+                                        <div class="overley">
+                                            <div class="videos-icon">
+                                                <div class="videos-icon-wapper">
+                                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="videos-text">
+                                        <h3>
+                                            {{ strlen($row['snippet']['title']) > 40 ? mb_substr($row['snippet']['title'],0,40,'utf-8') : $row['snippet']['title'] }}...
+                                        </h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endif
                 @endforeach
+
 
 
             </div><!--/featured-videos-section-->
