@@ -184,7 +184,7 @@
                                                 <label for="image-upload" class="img-label" id="image-label"><i class="icofont-upload-alt"></i>{{__('Upload')}}</label>
                                                   <input type="file" name="image_big" class="img-upload" id="image-upload">
                                               </div>
-                                                <p class="text">{{__('Prefered Size: (600x600) or Square Sized Image')}}</p>
+                                                <p class="text">{{__('Prefered Size: (1280x720/1200x630) or Square Sized Image')}}</p>
                                           </div>
 
                                     </div>

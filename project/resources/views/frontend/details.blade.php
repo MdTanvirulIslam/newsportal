@@ -257,6 +257,7 @@
                         </div>
                         <img class="img-fluid" src="{{asset('assets/images/post/'.$data->image_big)}}"
                              alt="ছবির ক্যাপশন: {{$data->image_caption}}">
+                        <div class="font-18 py-2 border-bottom text-center bg-light">{{$data->image_caption}}</div>
                         {!!$gs->section_ten_point_two_ads!!}
                         @if ($data->post_type == 'audio')
                             <p style="text-align: center;"><b>&nbsp;অডিও&nbsp; ফাইল</b></p>

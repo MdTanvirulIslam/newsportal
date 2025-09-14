@@ -94,10 +94,24 @@ class ArticleController extends Controller
         $data  = new Post();
         $input = $request->all();
 
-        if($file = $request->file('image_big')){
-            $img = Image::make($file->getRealPath())->resize(780,438);
+        /*if($file = $request->file('image_big')){
+            $img = Image::make($file->getRealPath())->resize(1280,720);
             $thumbnail = time().Str::random(8).'.jpg';
             $img->save(base_path().'/../assets/images/post/'.$thumbnail);
+            $input['image_big'] = $thumbnail;
+        }*/
+
+        if ($file = $request->file('image_big')) {
+            // Resize to 1280x720
+            $img = Image::make($file->getRealPath())->resize(1280, 720);
+
+            // Generate unique filename with .webp extension
+            $thumbnail = gethostname(). time() . Str::random(8) . '.webp';
+
+            // Save as webp (quality 80 is good balance between size & quality)
+            $img->encode('webp', 80)
+                ->save(public_path('assets/images/post/' . $thumbnail));
+
             $input['image_big'] = $thumbnail;
         }
 
