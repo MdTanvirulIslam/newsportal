@@ -1,5 +1,5 @@
-<?php 
-
+<?php
+use Carbon\Carbon;
 if (!function_exists('slug_create') ) {
     function slug_create($val) {
         $slug = preg_replace('/\s+/u', '-', trim($val));
@@ -13,7 +13,7 @@ if(!function_exists('advertisement')){
                                         ->where('add_placement','index_bottom')
                                         ->where('addSize','size_728')
                                         ->where('status',1)
-                                        ->first(); 
+                                        ->first();
         return $index_bottom;
     }
 }
@@ -24,7 +24,7 @@ if(!function_exists('sidebar_banner')){
                                         ->where('add_placement','sidebar_bottom')
                                         ->where('addSize','size_468')
                                         ->where('status',1)
-                                        ->first(); 
+                                        ->first();
         return $sidebar_banner;
     }
 }
@@ -50,7 +50,7 @@ if(!function_exists('header_ads')){
                                 ->where('status',1)
                                 ->inRandomOrder()
                                 ->limit(1)
-                                ->first(); 
+                                ->first();
         return $header_ads;
     }
 }
@@ -67,5 +67,46 @@ if(!function_exists('d_logo')){
         return $header_footer_logo;
     }
 }
+
+if (! function_exists('banglaDate')) {
+    function banglaDate($date)
+    {
+        if (!$date) return null;
+
+        $date = Carbon::parse($date);
+
+        // Bangla months
+        $months = [
+            'January' => 'জানুয়ারী',
+            'February' => 'ফেব্রুয়ারী',
+            'March' => 'মার্চ',
+            'April' => 'এপ্রিল',
+            'May' => 'মে',
+            'June' => 'জুন',
+            'July' => 'জুলাই',
+            'August' => 'আগস্ট',
+            'September' => 'সেপ্টেম্বর',
+            'October' => 'অক্টোবর',
+            'November' => 'নভেম্বর',
+            'December' => 'ডিসেম্বর',
+        ];
+
+        // Convert date to English format
+        $english = $date->format('j F, Y');
+
+        // Replace numbers with Bangla
+        $banglaNumbers = [
+            '0' => '০', '1' => '১', '2' => '২', '3' => '৩', '4' => '৪',
+            '5' => '৫', '6' => '৬', '7' => '৭', '8' => '৮', '9' => '৯'
+        ];
+        $english = strtr($english, $banglaNumbers);
+
+        // Replace month with Bangla month
+        return strtr($english, $months);
+    }
+}
+
+
+
 
 

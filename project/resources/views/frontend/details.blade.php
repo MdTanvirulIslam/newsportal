@@ -244,7 +244,7 @@
 
                             <div class="writer-name">
                                 <!--{{$data->admin->name}} <br>-->
-                                নিউজ প্রকাশের তারিখ : {{$data->createdAt()}} ইং
+                                নিউজ প্রকাশের তারিখ : {{banglaDate($data->createdAt())}} ইং
                             </div>
 
 
