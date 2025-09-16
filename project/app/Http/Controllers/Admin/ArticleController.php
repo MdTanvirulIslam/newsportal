@@ -106,7 +106,7 @@ class ArticleController extends Controller
             $img = Image::make($file->getRealPath())->resize(1280, 720);
 
             // Generate unique filename with .webp extension
-            $thumbnail = gethostname(). time() . Str::random(8) . '.webp';
+            $thumbnail = request()->getHost(). time() . Str::random(8) . '.webp';
 
             // Save as webp (quality 80 is good balance between size & quality)
             $img->encode('webp', 80)
@@ -193,9 +193,16 @@ class ArticleController extends Controller
 
         $input = $request->all();
 
-        if($file = $request->file('image_big')){
-            $img = Image::make($file->getRealPath())->resize(780,438);
-            $thumbnail = time().Str::random(8).'.jpg';
+        if ($file = $request->file('image_big')) {
+            // Resize to 1280x720
+            $img = Image::make($file->getRealPath())->resize(1280, 720);
+
+            // Generate unique filename with .webp extension
+            $thumbnail = request()->getHost(). time() . Str::random(8) . '.webp';
+
+            // Save as webp (quality 80 is good balance between size & quality)
+            $img->encode('webp', 80)
+                ->save(public_path('assets/images/post/' . $thumbnail));
             $img->save(base_path().'/../assets/images/post/'.$thumbnail);
             @unlink('assets/images/post/'.$data->image_big);
             $input['image_big'] = $thumbnail;
